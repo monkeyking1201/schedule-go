@@ -28,8 +28,7 @@ st.markdown("""
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, .stApp {
   font-family: 'Inter','Noto Sans TC',-apple-system,sans-serif !important;
-  background: #F5F5F7 !important;
-  color: #1d1d1f !important;
+  background: #F5F5F7 !important; color: #1d1d1f !important;
 }
 footer,#MainMenu,header { visibility:hidden !important; }
 [data-testid="stToolbar"] { display:none !important; }
@@ -85,6 +84,7 @@ footer,#MainMenu,header { visibility:hidden !important; }
 [data-testid="stSelectbox"] [data-baseweb="select"] p {
   font-size: 2.6rem !important; font-weight: 900 !important;
   letter-spacing: -.04em !important; line-height: 1.1 !important; color: #0071E3 !important;
+  white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
 }
 [data-testid="stSelectbox"] [data-baseweb="select"] span[title="休息/空白"],
 [data-testid="stSelectbox"] [data-baseweb="select"] div[title="休息/空白"] {
@@ -181,7 +181,7 @@ section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
 .cat-bar-name { font-size:.9rem; font-weight:600; color:#1d1d1f; }
 .cat-bar-info { font-size:.82rem; color:#86868B; }
 .cat-bar-track { height:12px; background:#F0F0F3; border-radius:6px; overflow:hidden; }
-.cat-bar-fill { height:100%; border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); }
+.cat-bar-fill { height:100%; border-radius:6px; }
 
 .cat-section { margin-bottom:2rem; }
 .cat-heading { font-size:.66rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; padding-bottom:.6rem; border-bottom:1px solid #E5E5EA; margin-bottom:.8rem; }
@@ -193,7 +193,6 @@ section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
 .item-pct { font-size:.78rem; font-weight:500; color:#86868B; min-width:3.2rem; text-align:right; }
 
 @page { size: A4 portrait; margin: 6mm 5mm; }
-
 @media print {
   section[data-testid="stSidebar"], header, footer,
   [data-testid="stToolbar"], [data-testid="stDecoration"],
@@ -249,9 +248,9 @@ CAT_LBL  = {"T":"實戰訓練","R":"研究精進","K":"恢復調整","O":"生活
 CAT_COL  = {"T":"#0071E3","R":"#34C759","K":"#AF52DE","O":"#86868B"}
 
 GROUPS = [
-    {"id":"mg","title":"早上","range":"07:00 – 12:00","slots":["07:00–08:00","08:00–09:00","09:00–10:00","10:00–11:00","11:00–12:00"],"page_break":False},
-    {"id":"af","title":"下午","range":"12:00 – 18:00","slots":["12:00–13:00","13:00–14:00","14:00–15:00","15:00–16:00","16:00–17:00","17:00–18:00"],"page_break":True},
-    {"id":"ev","title":"晚上","range":"18:00 – 22:00","slots":["18:00–19:00","19:00–20:00","20:00–21:00","21:00–22:00"],"page_break":True},
+    {"id":"mg","title":"早上","range":"07:00 - 12:00","slots":["07:00-08:00","08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00"],"page_break":False},
+    {"id":"af","title":"下午","range":"12:00 - 18:00","slots":["12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00","17:00-18:00"],"page_break":True},
+    {"id":"ev","title":"晚上","range":"18:00 - 22:00","slots":["18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00"],"page_break":True},
 ]
 ALL_SLOTS = [s for g in GROUPS for s in g["slots"]]
 SLOT_TO_PERIOD = {s: g["title"] for g in GROUPS for s in g["slots"]}
@@ -276,7 +275,7 @@ with st.sidebar:
 
     if sync_btn:
         if not GS_AVAILABLE:
-            st.error("請先安裝 gspread：\npip install gspread google-auth")
+            st.error("請先安裝 gspread：pip install gspread google-auth")
         else:
             rows = []
             for day in DAYS_ZH:
@@ -294,7 +293,7 @@ with st.sidebar:
                         sh     = client.open_by_key(SHEET_ID)
                         ws     = sh.sheet1
                         ws.append_rows(rows, value_input_option="USER_ENTERED")
-                    st.success("課表已成功建檔至雲端大腦！\n共寫入 **"+str(len(rows))+"** 筆紀錄。")
+                    st.success("課表已成功建檔至雲端大腦！共寫入 "+str(len(rows))+" 筆紀錄。")
                 except FileNotFoundError:
                     st.error("找不到憑證檔案：credentials.json")
                 except Exception as e:
@@ -304,7 +303,7 @@ st.markdown("""
 <div class="hero">
   <div class="hero-eyebrow">Professional Training Scheduler</div>
   <div class="hero-title">七月暑期訓練排表</div>
-  <div class="hero-sub">為職業棋士計劃的訓練計劃工具 — 規劃每週課表，系統自動推算七月整月訓練量</div>
+  <div class="hero-sub">為職業棋士設計的訓練計劃工具 — 規劃每週課表，系統自動推算七月整月訓練量</div>
 </div>""", unsafe_allow_html=True)
 
 components.html("""
@@ -316,11 +315,10 @@ components.html("""
     font-family:'Noto Sans TC','Inter',sans-serif;
     font-size:1rem; font-weight:700; padding:.85rem 2.4rem; cursor:pointer;
     box-shadow:0 3px 12px rgba(0,0,0,.22); transition:background .18s, transform .15s;
-    letter-spacing:-.01em;
   }
   button:hover { background:#333; transform:translateY(-2px); }
 </style>
-<button onclick="window.parent.print()">⬛ 匯出 PDF / 列印課表</button>
+<button onclick="window.parent.print()">匯出 PDF / 列印課表</button>
 """, height=66)
 
 for g in GROUPS:
@@ -384,12 +382,12 @@ if go:
         hrs = cat_hrs[c]
         if hrs == 0: continue
         pct = hrs / grand * 100
-        stacked_segs += '<div class="stacked-seg" style="flex:'+str(pct)+';background:'+CAT_COL[c]+'" title="'+CAT_LBL[c]+' '+'{:.1f}'.format(pct)+'%"></div>'
+        stacked_segs += '<div class="stacked-seg" style="flex:'+str(round(pct,2))+';background:'+CAT_COL[c]+'"></div>'
 
     legend_items = ""
     for c in ["T","R","K","O"]:
         pct = cat_hrs[c] / grand * 100
-        legend_items += '<div class="legend-item"><div class="legend-dot" style="background:'+CAT_COL[c]+'"></div>'+CAT_LBL[c]+' '+'{:.1f}'.format(pct)+'%</div>'
+        legend_items += '<div class="legend-item"><div class="legend-dot" style="background:'+CAT_COL[c]+'"></div>'+CAT_LBL[c]+' '+str(round(pct,1))+'%</div>'
 
     bar_rows = ""
     for c in ["T","R","K","O"]:
@@ -399,10 +397,10 @@ if go:
             '<div class="cat-bar-row">'
             '<div class="cat-bar-header">'
             '<span class="cat-bar-name" style="color:'+CAT_COL[c]+'">'+CAT_LBL[c]+'</span>'
-            '<span class="cat-bar-info">'+str(hrs)+' hr &nbsp;&middot;&nbsp; '+'{:.1f}'.format(pct)+'%</span>'
+            '<span class="cat-bar-info">'+str(hrs)+' hr  '+str(round(pct,1))+'%</span>'
             '</div>'
             '<div class="cat-bar-track">'
-            '<div class="cat-bar-fill" style="width:'+'{:.2f}'.format(pct)+'%;background:'+CAT_COL[c]+'"></div>'
+            '<div class="cat-bar-fill" style="width:'+str(round(pct,2))+'%;background:'+CAT_COL[c]+'"></div>'
             '</div></div>'
         )
 
@@ -427,16 +425,16 @@ if go:
             item_pct = hrs / grand * 100
             rows_html += (
                 '<div class="item-row">'
-                '<span class="item-name">'+em+"  "+item+'</span>'
+                '<span class="item-name">'+em+'  '+item+'</span>'
                 '<span class="item-right">'
-                '<span class="item-pct">'+'{:.1f}'.format(item_pct)+'%</span>'
+                '<span class="item-pct">'+str(round(item_pct,1))+'%</span>'
                 '<span class="item-hrs" style="color:'+col+'">'+str(hrs)+' hr</span>'
                 '</span></div>'
             )
         ctot_pct = ctot / grand * 100
         cat_html += (
             '<div class="cat-section">'
-            '<div class="cat-heading" style="color:'+col+'">'+lbl+' &middot; '+str(ctot)+' hr &middot; '+'{:.1f}'.format(ctot_pct)+'%</div>'
+            '<div class="cat-heading" style="color:'+col+'">'+lbl+' - '+str(ctot)+' hr - '+str(round(ctot_pct,1))+'%</div>'
             +rows_html+'</div>'
         )
 
@@ -444,7 +442,7 @@ if go:
         '<div class="result-card">'
         '<div class="result-eyebrow">July Training Report</div>'
         '<div class="result-title">七月整月訓練預測</div>'
-        '<div class="result-sub">以本週課表 &times; 4 計算，涵蓋 '+str(total_slots)+' 個總可用時段（07:00–22:00）</div>'
+        '<div class="result-sub">以本週課表 x 4 計算，涵蓋 '+str(total_slots)+' 個總可用時段（07:00-22:00）</div>'
         +stat_html+dist_html+cat_html+'</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
