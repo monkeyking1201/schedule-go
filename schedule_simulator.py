@@ -229,6 +229,7 @@ EMOJI    = {"下棋實戰":"♟","網棋對弈":"\U0001f310","打譜":"\U0001f4d
 CATMAP   = {"下棋實戰":"T","網棋對弈":"T","上課":"T","打譜":"R","AI 檢討":"R","做題目":"R","靜心研究":"R","運動":"K","閱讀":"K","吃飯":"O","睡覺":"O","自由時間":"O","休息/空白":"O"}
 CAT_LBL  = {"T":"實戰訓練","R":"研究精進","K":"恢復調整","O":"生活其他"}
 CAT_COL  = {"T":"#0071E3","R":"#34C759","K":"#AF52DE","O":"#86868B"}
+MONTHS   = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]
 
 GROUPS = [
     {"id":"mg","title":"早上","range":"07:00 - 12:00","slots":["07:00-08:00","08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00"],"page_break":False},
@@ -250,9 +251,12 @@ with st.sidebar:
     st.divider()
     st.markdown("### 雲端大腦")
     student_name = st.text_input("學員姓名", value="陳映嘉")
+    month_sel = st.selectbox("訓練月份", MONTHS, index=6)
+
     st.markdown('<div class="db-btn">', unsafe_allow_html=True)
     sync_btn = st.button("\U0001f9e0 將此課表同步至大腦資料庫", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
     if sync_btn:
         if not GS_AVAILABLE:
             st.error("請先安裝 gspread：pip install gspread google-auth")
@@ -262,7 +266,7 @@ with st.sidebar:
                 for slot in ALL_SLOTS:
                     val = st.session_state.schedule.get((slot, day), OPTIONS[0])
                     if val and val != OPTIONS[0]:
-                        rows.append([student_name, day, SLOT_TO_PERIOD[slot], slot, val])
+                        rows.append([student_name, month_sel, day, SLOT_TO_PERIOD[slot], slot, val])
             if not rows:
                 st.warning("課表中尚無任何訓練項目，請先填寫課表。")
             else:
@@ -271,7 +275,7 @@ with st.sidebar:
                         client = get_gs_client()
                         ws = client.open_by_key(SHEET_ID).sheet1
                         ws.append_rows(rows, value_input_option="USER_ENTERED")
-                    st.success("課表已成功建檔至雲端大腦！共寫入 "+str(len(rows))+" 筆紀錄。")
+                    st.success("課表已成功建檔至雲端大腦！\n共寫入 "+str(len(rows))+" 筆紀錄。")
                 except FileNotFoundError:
                     st.error("找不到憑證檔案：credentials.json")
                 except Exception as e:
@@ -314,7 +318,7 @@ for g in GROUPS:
 
 _,mid,_ = st.columns([3,2,3])
 with mid:
-    go = st.button("生成七月訓練總量報告", use_container_width=True)
+    go = st.button("生成訓練總量報告", use_container_width=True)
 
 if go:
     counts = {}
@@ -359,8 +363,8 @@ if go:
 
     st.markdown(
         '<div class="result-card">'
-        '<div class="result-eyebrow">July Training Report</div>'
-        '<div class="result-title">七月整月訓練預測</div>'
+        '<div class="result-eyebrow">Training Report</div>'
+        '<div class="result-title">'+month_sel+'整月訓練預測</div>'
         '<div class="result-sub">以本週課表 x 4 計算，涵蓋 420 個總可用時段（07:00-22:00）</div>'
         +stat_html+dist_html+cat_html+'</div>',
         unsafe_allow_html=True
