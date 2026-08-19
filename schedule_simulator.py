@@ -78,29 +78,34 @@ footer,#MainMenu,header { visibility:hidden !important; }
   outline: 2.5px solid #0071E3 !important; outline-offset: -2px !important; border-radius: 14px !important;
 }
 
-/* ── Font: broad selectors ── */
-[data-testid="stSelectbox"] [data-baseweb="select"] div,
-[data-testid="stSelectbox"] [data-baseweb="select"] span,
-[data-testid="stSelectbox"] [data-baseweb="select"] p,
-[data-testid="stSelectbox"] [data-baseweb="select"] > div > div,
-[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div,
-[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div > span,
-[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div > div {
+/* ══ NUCLEAR FONT OVERRIDE: every non-SVG element inside main-area selectbox ══ */
+[data-testid="stMainBlockContainer"] [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
   font-size: 2rem !important; font-weight: 900 !important;
-  letter-spacing: -.04em !important; line-height: 1.1 !important; color: #0071E3 !important;
-  white-space: nowrap !important; overflow: visible !important; text-overflow: clip !important;
+  color: #0071E3 !important; letter-spacing: -.04em !important;
+  line-height: 1.1 !important; white-space: nowrap !important;
+  overflow: visible !important; text-overflow: clip !important;
 }
-[data-testid="stSelectbox"] [data-baseweb="select"] span[title="休息/空白"],
-[data-testid="stSelectbox"] [data-baseweb="select"] div[title="休息/空白"] {
+/* Fallback without stMainBlockContainer */
+[data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
+  font-size: 2rem !important; font-weight: 900 !important;
+  color: #0071E3 !important; letter-spacing: -.04em !important;
+  line-height: 1.1 !important; white-space: nowrap !important;
+  overflow: visible !important; text-overflow: clip !important;
+}
+/* Sidebar selectboxes: reset to normal size */
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
+  font-size: 1rem !important; font-weight: 400 !important;
+  color: #1d1d1f !important; letter-spacing: normal !important;
+  line-height: normal !important; white-space: normal !important;
+}
+/* Ghost state */
+[data-testid="stSelectbox"] *[title="休息/空白"] {
   color: #D1D1D6 !important; font-weight: 300 !important;
   font-size: 1.1rem !important; letter-spacing: .01em !important;
 }
-[data-testid="stSelectbox"] [data-baseweb="select"] svg,
-[data-testid="stSelectbox"] [data-baseweb="select"] svg * {
-  fill: #C7C7CC !important; font-size: initial !important; font-weight: initial !important;
-  color: initial !important; width: 18px !important; height: 18px !important;
-  min-width:18px !important; flex-shrink:0 !important;
-}
+/* SVG chevron reset */
+[data-testid="stSelectbox"] svg { width:18px !important; height:18px !important; min-width:18px !important; flex-shrink:0 !important; }
+[data-testid="stSelectbox"] svg * { fill:#C7C7CC !important; font-size:initial !important; font-weight:initial !important; color:initial !important; letter-spacing:initial !important; }
 
 [data-baseweb="popover"] {
   background:#FFFFFF !important; border:none !important; border-radius:14px !important;
@@ -129,9 +134,6 @@ section[data-testid="stSidebar"] h3, section[data-testid="stSidebar"] .stMarkdow
 }
 section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] .stMarkdown p {
   font-size:1.1rem !important; font-weight:500 !important; color:#1d1d1f !important; line-height:1.6 !important;
-}
-section[data-testid="stSidebar"] span {
-  font-size:1.4rem !important; font-weight:800 !important; letter-spacing:-.01em !important; line-height:2 !important;
 }
 section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
 
@@ -210,65 +212,21 @@ section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
     min-height:100px !important; height:100px !important; padding:4px 5px !important;
     display:flex !important; align-items:center !important; justify-content:center !important; overflow:visible !important;
   }
-  [data-testid="stSelectbox"] [data-baseweb="select"] div,
-  [data-testid="stSelectbox"] [data-baseweb="select"] span,
-  [data-testid="stSelectbox"] [data-baseweb="select"] p {
+  [data-testid="stSelectbox"] [data-baseweb="select"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask) {
     color:#000 !important; font-size:.95rem !important; font-weight:700 !important;
     letter-spacing:-.01em !important; line-height:1.3 !important;
     white-space:normal !important; overflow:visible !important; text-overflow:clip !important;
     max-width:none !important; width:auto !important; text-align:center !important;
   }
-  [data-testid="stSelectbox"] [data-baseweb="select"] span[title="休息/空白"],
-  [data-testid="stSelectbox"] [data-baseweb="select"] div[title="休息/空白"] {
+  [data-testid="stSelectbox"] *[title="休息/空白"] {
     color:#bbb !important; font-weight:400 !important; font-size:.72rem !important;
   }
-  [data-testid="stSelectbox"] [data-baseweb="select"] svg { display:none !important; }
+  [data-testid="stSelectbox"] svg { display:none !important; }
   .print-page-break { page-break-before:always !important; break-before:page !important; }
   [data-testid="stHorizontalBlock"] { page-break-inside:avoid !important; break-inside:avoid !important; }
 }
 </style>
 """, unsafe_allow_html=True)
-
-# JS injection: force card font styles via window.parent (same-origin iframe)
-components.html("""
-<script>
-(function(){
-  function applyCardFont(){
-    try {
-      var doc = window.parent.document;
-      var boxes = doc.querySelectorAll('[data-testid="stSelectbox"] [data-baseweb="select"]');
-      boxes.forEach(function(sel){
-        var all = sel.querySelectorAll('*');
-        all.forEach(function(el){
-          var tag = el.tagName.toLowerCase();
-          if(tag==='svg'||tag==='path'||tag==='line'||tag==='polyline'||tag==='circle'||tag==='rect') return;
-          if(el.closest('svg')) return;
-          var title = el.getAttribute('title')||'';
-          if(title==='休息/空白'){
-            el.style.setProperty('font-size','1.1rem','important');
-            el.style.setProperty('font-weight','300','important');
-            el.style.setProperty('color','#D1D1D6','important');
-            el.style.setProperty('letter-spacing','.01em','important');
-          } else {
-            el.style.setProperty('font-size','2rem','important');
-            el.style.setProperty('font-weight','900','important');
-            el.style.setProperty('color','#0071E3','important');
-            el.style.setProperty('letter-spacing','-.04em','important');
-            el.style.setProperty('line-height','1.1','important');
-            el.style.setProperty('white-space','nowrap','important');
-          }
-        });
-      });
-    } catch(e){}
-  }
-  applyCardFont();
-  try {
-    var obs = new MutationObserver(function(){ applyCardFont(); });
-    obs.observe(window.parent.document.body,{childList:true,subtree:true});
-  } catch(e){}
-})();
-</script>
-""", height=0)
 
 DAYS_ZH = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"]
 OPTIONS  = ["休息/空白","下棋實戰","網棋對弈","打譜","AI 檢討","做題目","靜心研究","運動","閱讀","上課","吃飯","睡覺","自由時間"]
