@@ -31,7 +31,8 @@ html, body, .stApp {
 footer,#MainMenu { visibility:hidden !important; }
 [data-testid="stDecoration"] { display:none !important; }
 [data-testid="stHeader"] { background:transparent !important; }
-[data-testid="stToolbar"] { display:none !important; }
+[data-testid="stToolbar"] { background:transparent !important; border:none !important; box-shadow:none !important; }
+[data-testid="stToolbarActionButtonIcon"] { display:none !important; }
 .block-container { padding:0 1rem 4rem !important; max-width:100% !important; }
 
 .hero { padding:3.5rem 0 2rem; text-align:center; }
