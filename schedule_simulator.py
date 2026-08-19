@@ -77,9 +77,15 @@ footer,#MainMenu,header { visibility:hidden !important; }
 [data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child:focus-within {
   outline: 2.5px solid #0071E3 !important; outline-offset: -2px !important; border-radius: 14px !important;
 }
+
+/* ── Font: broad selectors ── */
 [data-testid="stSelectbox"] [data-baseweb="select"] div,
 [data-testid="stSelectbox"] [data-baseweb="select"] span,
-[data-testid="stSelectbox"] [data-baseweb="select"] p {
+[data-testid="stSelectbox"] [data-baseweb="select"] p,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div > div,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div > span,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div > div > div > div {
   font-size: 2rem !important; font-weight: 900 !important;
   letter-spacing: -.04em !important; line-height: 1.1 !important; color: #0071E3 !important;
   white-space: nowrap !important; overflow: visible !important; text-overflow: clip !important;
@@ -222,6 +228,47 @@ section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
 }
 </style>
 """, unsafe_allow_html=True)
+
+# JS injection: force card font styles via window.parent (same-origin iframe)
+components.html("""
+<script>
+(function(){
+  function applyCardFont(){
+    try {
+      var doc = window.parent.document;
+      var boxes = doc.querySelectorAll('[data-testid="stSelectbox"] [data-baseweb="select"]');
+      boxes.forEach(function(sel){
+        var all = sel.querySelectorAll('*');
+        all.forEach(function(el){
+          var tag = el.tagName.toLowerCase();
+          if(tag==='svg'||tag==='path'||tag==='line'||tag==='polyline'||tag==='circle'||tag==='rect') return;
+          if(el.closest('svg')) return;
+          var title = el.getAttribute('title')||'';
+          if(title==='休息/空白'){
+            el.style.setProperty('font-size','1.1rem','important');
+            el.style.setProperty('font-weight','300','important');
+            el.style.setProperty('color','#D1D1D6','important');
+            el.style.setProperty('letter-spacing','.01em','important');
+          } else {
+            el.style.setProperty('font-size','2rem','important');
+            el.style.setProperty('font-weight','900','important');
+            el.style.setProperty('color','#0071E3','important');
+            el.style.setProperty('letter-spacing','-.04em','important');
+            el.style.setProperty('line-height','1.1','important');
+            el.style.setProperty('white-space','nowrap','important');
+          }
+        });
+      });
+    } catch(e){}
+  }
+  applyCardFont();
+  try {
+    var obs = new MutationObserver(function(){ applyCardFont(); });
+    obs.observe(window.parent.document.body,{childList:true,subtree:true});
+  } catch(e){}
+})();
+</script>
+""", height=0)
 
 DAYS_ZH = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"]
 OPTIONS  = ["休息/空白","下棋實戰","網棋對弈","打譜","AI 檢討","做題目","靜心研究","運動","閱讀","上課","吃飯","睡覺","自由時間"]
