@@ -49,6 +49,7 @@ footer,#MainMenu,header { visibility:hidden !important; }
   letter-spacing:-.03em; line-height:1.2; text-align:right;
 }
 
+/* ── Card shell ── */
 [data-testid="stSelectbox"] > label { display:none !important; }
 [data-testid="stSelectbox"] > div { padding:0 !important; }
 [data-testid="stSelectbox"] {
@@ -68,44 +69,57 @@ footer,#MainMenu,header { visibility:hidden !important; }
 [data-testid="stSelectbox"]:has(span:not([title="休息/空白"])) {
   border-left: 4px solid #0071E3 !important; background: #F5F9FF !important;
 }
-[data-testid="stSelectbox"] [data-baseweb="select"] { min-height:120px !important; }
+
+/* ── Inner containers: vertical centering ── */
+[data-testid="stSelectbox"] > div > div,
+[data-testid="stSelectbox"] [data-baseweb="select"],
+[data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child,
+[data-testid="stSelectbox"] [role="combobox"],
+[data-testid="stSelectbox"] [role="combobox"] > div {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 120px !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+}
 [data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child {
-  background: transparent !important; border: none !important; border-radius: 0 !important;
-  min-height: 120px !important; padding: 0 .8rem !important; cursor: pointer !important;
-  display: flex !important; align-items: center !important; justify-content: space-between !important;
+  padding: 0 .8rem !important;
+  justify-content: space-between !important;
 }
 [data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child:focus-within {
   outline: 2.5px solid #0071E3 !important; outline-offset: -2px !important; border-radius: 14px !important;
 }
 
-/* ══ NUCLEAR FONT OVERRIDE: every non-SVG element inside main-area selectbox ══ */
-[data-testid="stMainBlockContainer"] [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
-  font-size: 2rem !important; font-weight: 900 !important;
-  color: #0071E3 !important; letter-spacing: -.04em !important;
-  line-height: 1.1 !important; white-space: nowrap !important;
-  overflow: visible !important; text-overflow: clip !important;
-}
-/* Fallback without stMainBlockContainer */
+/* ══ NUCLEAR FONT: every non-SVG element in main-area selectbox ══ */
 [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
   font-size: 2rem !important; font-weight: 900 !important;
   color: #0071E3 !important; letter-spacing: -.04em !important;
   line-height: 1.1 !important; white-space: nowrap !important;
   overflow: visible !important; text-overflow: clip !important;
 }
-/* Sidebar selectboxes: reset to normal size */
-section[data-testid="stSidebar"] [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
-  font-size: 1rem !important; font-weight: 400 !important;
-  color: #1d1d1f !important; letter-spacing: normal !important;
-  line-height: normal !important; white-space: normal !important;
-}
 /* Ghost state */
 [data-testid="stSelectbox"] *[title="休息/空白"] {
   color: #D1D1D6 !important; font-weight: 300 !important;
   font-size: 1.1rem !important; letter-spacing: .01em !important;
 }
-/* SVG chevron reset */
+/* SVG chevron */
 [data-testid="stSelectbox"] svg { width:18px !important; height:18px !important; min-width:18px !important; flex-shrink:0 !important; }
 [data-testid="stSelectbox"] svg * { fill:#C7C7CC !important; font-size:initial !important; font-weight:initial !important; color:initial !important; letter-spacing:initial !important; }
+
+/* Sidebar selectbox: normal size */
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] { min-height: auto !important; border-left: 1px solid rgba(0,0,0,.1) !important; box-shadow: none !important; border-radius: 8px !important; background: #fff !important; }
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div,
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] [data-baseweb="select"],
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child,
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] [role="combobox"],
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] [role="combobox"] > div { min-height: auto !important; }
+section[data-testid="stSidebar"] [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask):not(use):not(symbol) {
+  font-size: 1rem !important; font-weight: 400 !important;
+  color: #1d1d1f !important; letter-spacing: normal !important;
+  line-height: normal !important; white-space: normal !important;
+}
 
 [data-baseweb="popover"] {
   background:#FFFFFF !important; border:none !important; border-radius:14px !important;
@@ -207,20 +221,20 @@ section[data-testid="stSidebar"] hr { border-color:#E5E5EA !important; }
     border-radius:3px !important; box-shadow:none !important; transform:none !important;
     min-height:100px !important; height:100px !important; transition:none !important; width:100% !important;
   }
-  [data-testid="stSelectbox"] [data-baseweb="select"] { min-height:100px !important; height:100px !important; }
+  [data-testid="stSelectbox"] > div > div,
+  [data-testid="stSelectbox"] [data-baseweb="select"],
   [data-testid="stSelectbox"] [data-baseweb="select"] > div:first-child {
-    min-height:100px !important; height:100px !important; padding:4px 5px !important;
-    display:flex !important; align-items:center !important; justify-content:center !important; overflow:visible !important;
+    min-height:100px !important; height:100px !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+    padding:4px 5px !important; overflow:visible !important;
   }
-  [data-testid="stSelectbox"] [data-baseweb="select"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask) {
+  [data-testid="stSelectbox"] *:not(svg):not(path):not(polyline):not(line):not(rect):not(circle):not(g):not(defs):not(clipPath):not(mask) {
     color:#000 !important; font-size:.95rem !important; font-weight:700 !important;
     letter-spacing:-.01em !important; line-height:1.3 !important;
     white-space:normal !important; overflow:visible !important; text-overflow:clip !important;
     max-width:none !important; width:auto !important; text-align:center !important;
   }
-  [data-testid="stSelectbox"] *[title="休息/空白"] {
-    color:#bbb !important; font-weight:400 !important; font-size:.72rem !important;
-  }
+  [data-testid="stSelectbox"] *[title="休息/空白"] { color:#bbb !important; font-weight:400 !important; font-size:.72rem !important; }
   [data-testid="stSelectbox"] svg { display:none !important; }
   .print-page-break { page-break-before:always !important; break-before:page !important; }
   [data-testid="stHorizontalBlock"] { page-break-inside:avoid !important; break-inside:avoid !important; }
